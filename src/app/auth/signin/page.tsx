@@ -1,10 +1,11 @@
 'use client'
+import { Suspense } from 'react'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
-export default function SignInPage() {
+function SignInForm() {
   const router = useRouter()
   const params = useSearchParams()
   const callbackUrl = params.get('callbackUrl') || '/feed'
@@ -29,17 +30,13 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        {/* Logo */}
         <Link href="/" className="flex items-center justify-center gap-2 font-extrabold text-xl mb-8">
           <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse-dot" />
           EchoCheck
         </Link>
-
         <div className="bg-surface border border-white/[0.07] rounded-2xl p-6">
           <h1 className="text-lg font-extrabold mb-1">Welcome back</h1>
           <p className="text-xs text-muted mb-6">Sign in to your account</p>
-
-          {/* Google */}
           <button
             onClick={() => signIn('google', { callbackUrl })}
             className="w-full flex items-center justify-center gap-3 border border-white/[0.1] rounded-xl py-2.5 text-sm font-medium hover:bg-surface2 transition-colors mb-4"
@@ -52,14 +49,11 @@ export default function SignInPage() {
             </svg>
             Continue with Google
           </button>
-
           <div className="flex items-center gap-3 my-4">
             <div className="flex-1 h-px bg-white/[0.07]" />
             <span className="text-xs text-muted">or</span>
             <div className="flex-1 h-px bg-white/[0.07]" />
           </div>
-
-          {/* Email form */}
           <form onSubmit={handleSubmit} className="space-y-3">
             <input
               type="email"
@@ -87,12 +81,19 @@ export default function SignInPage() {
             </button>
           </form>
         </div>
-
         <p className="text-center text-xs text-muted mt-4">
           No account?{' '}
           <Link href="/auth/register" className="text-accent hover:underline">Create one free</Link>
         </p>
       </div>
     </div>
+  )
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin"/></div>}>
+      <SignInForm />
+    </Suspense>
   )
 }
