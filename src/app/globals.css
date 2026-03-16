@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-syne: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: #0a0a0f;
+  color: #f0f0f8;
+  font-family: var(--font-syne);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #111118; }
+::-webkit-scrollbar-thumb { background: #2a2a38; border-radius: 2px; }
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin-ring {
+  from { stroke-dashoffset: 125.6; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.75); }
+}
+
+.animate-fade-in   { animation: fade-in 0.4s ease forwards; }
+.animate-slide-up  { animation: slide-up 0.45s ease forwards; }
+.animate-pulse-dot { animation: pulse-dot 2s infinite; }
+
+/* Stagger helpers */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Score ring */
+.score-ring-track { stroke: rgba(255,255,255,0.06); }
+
+/* Glass card */
+.glass {
+  background: rgba(17,17,24,0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+/* Verdict badges */
+.badge-authentic { background: rgba(200,245,66,0.1);  color: #c8f542; border: 1px solid rgba(200,245,66,0.2); }
+.badge-ai        { background: rgba(255,92,92,0.1);   color: #ff5c5c; border: 1px solid rgba(255,92,92,0.2); }
+.badge-mixed     { background: rgba(245,200,66,0.1);  color: #f5c842; border: 1px solid rgba(245,200,66,0.2); }
+.badge-scam      { background: rgba(255,92,92,0.1);   color: #ff5c5c; border: 1px solid rgba(255,92,92,0.2); }
+.badge-trending  { background: rgba(34,211,200,0.1);  color: #22d3c8; border: 1px solid rgba(34,211,200,0.2); }
+.badge-pending   { background: rgba(122,122,154,0.1); color: #7a7a9a; border: 1px solid rgba(122,122,154,0.2); }
+
+/* AdSense containers */
+.ad-slot {
+  background: rgba(255,255,255,0.02);
+  border: 1px dashed rgba(255,255,255,0.06);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.15);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}

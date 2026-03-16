@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+}
+
+model User {
+  id              String    @id @default(cuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  password        String?
+  role            Role      @default(USER)
+  plan            Plan      @default(FREE)
+  accuracyScore   Float     @default(0)
+  totalVotes      Int       @default(0)
+  correctVotes    Int       @default(0)
+  isTrustedVoice  Boolean   @default(false)
+  stripeCustomerId String?  @unique
+  stripeSubId     String?   @unique
+  createdAt       DateTime  @default(now())
+  accounts        Account[]
+  sessions        Session[]
+  votes           Vote[]
+  submissions     Check[]
+  subscription    Subscription?
+}
+
+model Check {
+  id            String      @id @default(cuid())
+  url           String
+  title         String
+  platform      String
+  category      String
+  aiScore       Float
+  communityScore Float?
+  verdict       Verdict     @default(PENDING)
+  signals       String[]
+  checkCount    Int         @default(0)
+  submittedBy   String?
+  isTrending    Boolean     @default(false)
+  isSignalFeed  Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  user          User?       @relation(fields: [submittedBy], references: [id])
+  votes         Vote[]
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  userId    String
+  checkId   String
+  isReal    Boolean
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  check     Check    @relation(fields: [checkId], references: [id], onDelete: Cascade)
+  @@unique([userId, checkId])
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String             @unique
+  stripeSubId          String             @unique
+  stripePriceId        String
+  stripeCurrentPeriodEnd DateTime
+  status               SubscriptionStatus @default(ACTIVE)
+  plan                 Plan               @default(PRO)
+  createdAt            DateTime           @default(now())
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  TRUSTED_VOICE
+  ADMIN
+}
+
+enum Plan {
+  FREE
+  PRO
+  CREATOR
+}
+
+enum Verdict {
+  PENDING
+  AUTHENTIC
+  AI_GENERATED
+  MIXED
+  TRENDING
+  SCAM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  INCOMPLETE
+}
