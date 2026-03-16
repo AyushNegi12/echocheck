@@ -1,22 +1,6 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "prisma generate && next build",
-  "installCommand": "npm install",
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "GOOGLE_CLIENT_ID": "@google_client_id",
-    "GOOGLE_CLIENT_SECRET": "@google_client_secret",
-    "STRIPE_SECRET_KEY": "@stripe_secret_key",
-    "STRIPE_WEBHOOK_SECRET": "@stripe_webhook_secret",
-    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@stripe_publishable_key",
-    "STRIPE_PRO_MONTHLY_PRICE_ID": "@stripe_pro_monthly_price_id",
-    "STRIPE_PRO_YEARLY_PRICE_ID": "@stripe_pro_yearly_price_id",
-    "STRIPE_CREATOR_MONTHLY_PRICE_ID": "@stripe_creator_monthly_price_id",
-    "NEXT_PUBLIC_ADSENSE_CLIENT_ID": "@adsense_client_id",
-    "NEXT_PUBLIC_ADSENSE_SLOT_FEED": "@adsense_slot_feed",
-    "NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR": "@adsense_slot_sidebar"
-  }
+  "buildCommand": "npx prisma generate && next build",
+  "installCommand": "npm install"
 }
